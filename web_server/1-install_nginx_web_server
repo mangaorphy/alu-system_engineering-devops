@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Update the package index
+apt-get update -y
+
+# Install Nginx
+apt-get install -y nginx
+
+# Configure Nginx to listen on port 80
+sed -i 's/listen 80 default_server/listen 80/' /etc/nginx/sites-available/default
+
+# Create a custom Nginx configuration file
+cat << EOF > /etc/nginx/sites-available/holberton
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        return 200 "holberton school for the win\n";
+    }
+}
+EOF
+
+# Enable the new Nginx configuration
+ln -sf /etc/nginx/sites-available/holberton /etc/nginx/sites-enabled/
+
+# Restart Nginx
+/etc/init.d/nginx restart
