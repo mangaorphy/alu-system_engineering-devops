@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Installs Nginx and configures it
+
+# Update the package lists
+sudo apt-get -y update
+
+# Install Nginx
+sudo apt-get -y install nginx
+
+# Replace the default index.html with a custom message
+echo 'Holberton School for the win!' | sudo tee /var/www/html/index.nginx-debian.html
+
+# Configure Nginx to redirect /redirect_me to another page
+sudo sed -i 's/listen 80 default_server;/listen 80 default_server;\n\trewrite ^\/redirect_me$ https:\/\/www.youtube.com\/watch?v=QH2-TGUlwu4 permanent;/' /etc/nginx/sites-available/default
+
+# Start the Nginx service
+sudo service nginx start
