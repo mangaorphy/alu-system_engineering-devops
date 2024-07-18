@@ -1,8 +1,30 @@
 #!/usr/bin/env bash
-# installs nginx and configure it to listen on port 80
-# print "Holberton School"
+# Installing nginx on a server and configuring a simple server
 
-sudo apt-get -y update
-sudo apt-get -y install nginx
-echo 'Holberton School' > /var/www/html/index.nginx-debian.html
-sudo service nginx start
+# Updating packages
+sudo apt-get update -y && sudo apt-get upgrade -y
+
+# Installing nginx
+sudo apt-get install nginx -y
+
+# Creating an index html file
+echo "Holberton School" | sudo tee /var/www/html/index.html
+
+# Altering the server config to create a server
+echo "
+events {
+
+}
+
+http {
+	server {
+		listen 80;
+		index index.html;
+		root /var/www/html;
+	}
+}
+"  | sudo tee /etc/nginx/nginx.conf
+
+# Restarting the server with the new config
+sudo service nginx restart
+
